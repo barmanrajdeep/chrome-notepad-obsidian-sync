@@ -25,7 +25,7 @@ Each vault maps to one folder in Chrome Notepad. Existing web edits are preserve
 - **Per-vault folders:** The plugin syncs only the active vault, creating a folder named after the vault on the first successful upload. Subfolders in your vault are synced into the same Chrome Notepad folder.
 - **Supported files:** Markdown files up to **512 KiB** each. Attachments remain in your vault, and Obsidian-specific links, embeds, and frontmatter are preserved as plain Markdown text.
 - **Checkpoints & recovery:** File IDs, sync timestamps, and your automatic-sync preference are backed up encrypted on the server (your sync token is never sent in the backup). If local plugin data is lost, select your sync secret and choose the previously synced vault to restore your mappings.
-- **Token lifetime:** Sync tokens can only upload notes through the Obsidian sync endpoint and expire after **90 days**. Revoking or replacing a token invalidates it for all vaults using it.
+- **Token lifetime:** Sync tokens can upload notes, back up encrypted vault metadata, and read vault names, synced file paths, and metadata backups (they cannot read note contents). Tokens expire after **90 days**, and revoking or replacing a token invalidates it for all vaults using it.
 
 ## License
 
