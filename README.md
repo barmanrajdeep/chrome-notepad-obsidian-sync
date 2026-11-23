@@ -27,7 +27,7 @@ The files in `obsidian-plugin/` and the files inside the ZIP are equivalent at t
 3. Open the vault folder in Finder or your terminal. If the vault is at `/path/to/MyVault`, create the plugin directory and copy the files with:
 
    ```bash
-   vault_path=""
+   vault_path="/Users/ankitabarman/Documents/risc"
    mkdir -p "$vault_path/.obsidian/plugins/chrome-notepad-sync"
    cp obsidian-plugin/main.js obsidian-plugin/manifest.json "$vault_path/.obsidian/plugins/chrome-notepad-sync/"
    ```
@@ -47,7 +47,7 @@ The files in `obsidian-plugin/` and the files inside the ZIP are equivalent at t
 For a faster edit cycle, install the current source with the installer, then disable and re-enable the plugin or use Obsidian's **Reload app without saving** command. The installer writes the selected API URL only into the vault’s plugin copy and leaves `obsidian-plugin/main.js` unchanged:
 
 ```bash
-./install-obsidian-plugin.sh dev "/"
+./obsidian-plugin/install-local.sh dev "/Users/ankitabarman/Documents/risc"
 ```
 
 Supported environments are `production`, `demo`, and `dev`. The `dev` environment uses `http://localhost:8080/notes`, so the local backend must be running on port 8080. During a manual sync, Obsidian shows a live report with changed-file progress, successful uploads, and failures. Keep the plugin directory outside the vault's synced note content if the vault itself is synchronized by another service.
@@ -69,14 +69,45 @@ The token can upload notes only through the Obsidian sync endpoint. It expires a
 
 Sync includes Markdown files up to 512 KiB each. Markdown text is preserved on import. Attachments stay in your vault, and Obsidian-specific links, embeds and frontmatter do not gain their Obsidian behavior in the web editor. Vault subfolders share the same Chrome Notepad folder. A vault folder appears on the first successful upload.
 
-## Release files
+## Release and publish
 
-`main.js` is both the plugin source and the installable entry point. It loads the Obsidian API at runtime and has no build dependencies. Run `node --test obsidian-plugin/main.test.cjs` from the monorepo root to verify the entry point.
+`main.js` is both the plugin source and the installable entry point. It loads the Obsidian API at runtime and has no build dependencies.
 
-For a Community Plugins submission, use a plugin repository with the README, license and manifest at its root, then attach `main.js` and `manifest.json` to a GitHub release tagged `1.0.0`. The source release needs a license chosen by the repository owner. See the [Obsidian release and submission guide](https://docs.obsidian.md/Plugins/Releasing/Submit%20your%20plugin).
+### 1. Verify before release
 
+1. Run the test suite from the monorepo root:
+   ```bash
+   node --test obsidian-plugin/main.test.cjs
+   ```
+2. Confirm `API_BASE_URL` in `obsidian-plugin/main.js` points to `https://api.chromenotepad.com/notes`.
+3. Update `"version"` (and `"minAppVersion"` if needed) in `obsidian-plugin/manifest.json`.
+4. Ensure `obsidian-plugin/LICENSE` and `obsidian-plugin/README.public.md` are up to date (use `README.public.md` as `README.md` in the public repository so internal dev notes stay private).
 
-## Remove artificats
+### 2. Sync to the public plugin repository
+
+To push only the `obsidian-plugin/` folder from this private monorepo to the separate public plugin repository without manual copying:
+
+- **`git subtree push` (simplest):**
+  ```bash
+  git remote add plugin-public https://github.com/<your-org>/<public-plugin-repo>.git
+  git subtree push --prefix=obsidian-plugin plugin-public main
+  ```
+  Re-run `git subtree push --prefix=obsidian-plugin plugin-public main` whenever `obsidian-plugin/` changes.
+- **GitHub Action (automated):** Alternatively, add a workflow in this monorepo triggered on `obsidian-plugin/**` that pushes the subfolder to the public repo using a deploy key or PAT.
+
+### 3. Create the GitHub Release (UI)
+
+1. Open the public plugin repository on GitHub.
+2. Click **Releases** (right sidebar) → **Draft a new release**.
+3. **Choose a tag:** Enter the exact version from `manifest.json` (e.g. `1.0.0`, **no `v` prefix**) and select **Create new tag on publish**.
+4. **Target:** Leave as `main` (or your release branch).
+5. **Release title:** e.g. `1.0.0`.
+6. **Attach binaries:** Drag and drop `main.js` and `manifest.json` directly into **"Attach binaries by dropping them here or selecting them"**.
+7. Click **Publish release**.
+
+For Community Plugins submission, see the [Obsidian release and submission guide](https://docs.obsidian.md/Plugins/Releasing/Submit%20your%20plugin).
+
+## Remove artifacts
 ```bash
 rm -rf /tmp/chrome-notepad-sync-1.0.0
 rm -f /tmp/chrome-notepad-sync-1.0.0.zip
