@@ -16,7 +16,7 @@ test('persists file identity before uploading and carries it through retries and
     vault: {
       on: (_, callback) => { rename = callback; },
       getMarkdownFiles: () => [file],
-      cachedRead: async () => '# Algebra\n\n$x^2$',
+      read: async () => '# Algebra\n\n$x^2$',
       getName: () => 'Math',
     },
   };
@@ -97,7 +97,7 @@ test('persists batch checkpoints and scans only changed files after restart', as
     vault: {
       on: () => {},
       getMarkdownFiles: () => files,
-      cachedRead: async file => file.path,
+      read: async file => file.path,
       getName: () => 'Batch vault',
     },
   };
@@ -165,7 +165,7 @@ function recoveryFixture({ saved, vaults, choice = 0, status = 200 }) {
     vault: {
       on: () => {},
       getMarkdownFiles: () => [file],
-      cachedRead: async () => 'content',
+      read: async () => 'content',
       getName: () => 'My vault',
     },
   };
