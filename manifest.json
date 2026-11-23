@@ -1,0 +1,10 @@
+{
+  "id": "chrome-notepad-sync",
+  "name": "Chrome Notepad Sync",
+  "version": "1.0.0",
+  "minAppVersion": "1.11.4",
+  "description": "Send a Markdown copy of your vault to your personal Chrome Notepad account.",
+  "author": "Chrome Notepad",
+  "authorUrl": "https://chromenotepad.com",
+  "isDesktopOnly": false
+}
