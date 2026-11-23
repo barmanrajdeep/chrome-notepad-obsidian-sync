@@ -27,7 +27,7 @@ The files in `obsidian-plugin/` and the files inside the ZIP are equivalent at t
 3. Open the vault folder in Finder or your terminal. If the vault is at `/path/to/MyVault`, create the plugin directory and copy the files with:
 
    ```bash
-   vault_path="/Users/ankitabarman/Documents/risc"
+   vault_path=""
    mkdir -p "$vault_path/.obsidian/plugins/chrome-notepad-sync"
    cp obsidian-plugin/main.js obsidian-plugin/manifest.json "$vault_path/.obsidian/plugins/chrome-notepad-sync/"
    ```
@@ -47,7 +47,7 @@ The files in `obsidian-plugin/` and the files inside the ZIP are equivalent at t
 For a faster edit cycle, install the current source with the installer, then disable and re-enable the plugin or use Obsidian's **Reload app without saving** command. The installer writes the selected API URL only into the vault’s plugin copy and leaves `obsidian-plugin/main.js` unchanged:
 
 ```bash
-./install-obsidian-plugin.sh dev "/Users/ankitabarman/Documents/risc"
+./install-obsidian-plugin.sh dev "/"
 ```
 
 Supported environments are `production`, `demo`, and `dev`. The `dev` environment uses `http://localhost:8080/notes`, so the local backend must be running on port 8080. During a manual sync, Obsidian shows a live report with changed-file progress, successful uploads, and failures. Keep the plugin directory outside the vault's synced note content if the vault itself is synchronized by another service.

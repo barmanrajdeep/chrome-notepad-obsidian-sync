@@ -6,8 +6,8 @@ usage() {
 Usage: ./obsidian-plugin/install-local.sh <production|demo|dev> <vault-path>
 
 Examples:
-  ./obsidian-plugin/install-local.sh dev "/Users/ankitabarman/Documents/risc"
-  ./obsidian-plugin/install-local.sh production "/Users/ankitabarman/Documents/risc"
+  ./obsidian-plugin/install-local.sh dev "/"
+  ./obsidian-plugin/install-local.sh production "/"
 EOF
 }
 
